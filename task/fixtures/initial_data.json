@@ -1,0 +1,38 @@
+[
+  {
+    "model": "task.Student",
+    "pk": 1,
+    "fields": {
+      "name": "Stephen William Hawking",
+      "birth_date": "1942-01-08",
+      "ticket_number": "2346",
+      "group": "TP-21"
+    }
+  },
+  {
+    "model": "task.Student",
+    "pk": 2,
+    "fields": {
+      "name": "Johnathan Bill Williams",
+      "birth_date": "1956-09-28",
+      "ticket_number": "2826",
+      "group": "TL-21"
+    }
+  },
+  {
+    "model": "task.Group",
+    "pk": 1,
+    "fields": {
+      "name": "TP-21",
+      "warden": "1"
+    }
+  },
+  {
+    "model": "task.Group",
+    "pk": 2,
+    "fields": {
+      "name": "TL-21",
+      "warden": "2"
+    }
+  }
+]
