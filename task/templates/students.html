@@ -1,0 +1,27 @@
+{% extends "home.html" %}
+	
+{% block content %}
+	{% for student in list %}
+	
+	<table>
+	<tr>
+		<td>Student name: &nbsp;</td>
+		<td>{{ student.name }}</a></td>
+	</tr>
+	<tr>
+		<td>Student birthday: &nbsp;</td>
+		<td>{{ student.birth_date }}</a></td>
+	</tr>
+	<tr>
+		<td>Ticket number: &nbsp;</td>
+		<td>{{ student.ticket_number }}</a></td>
+	</tr>
+	<tr>
+		<td>Student group: &nbsp;</td>
+		<td>{{ student.group }}</a></td>
+	</tr>
+	</table>
+	<hr>
+	
+	{% endfor %}
+{% endblock %}
