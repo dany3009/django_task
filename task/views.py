@@ -1,5 +1,6 @@
 from django.template import loader, Context
-from django.http import HttpResponse
+from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect
 from task.models import Student, Group
 from django.contrib import auth
 
@@ -22,16 +23,28 @@ def student_list(request, name):
     cont = Context({ 'list' : list })
     return HttpResponse(templ.render(cont))
 
-
 def login(request):
+    return render(request, 'login.html')
+
+def login_success(request):
+    templ = loader.get_template('status_login.html')
+    cont = Context({ 'status' : 'Login Success' })
+    return HttpResponse(templ.render(cont))
+
+def login_invalid(request):
+    templ = loader.get_template('status_login.html')
+    cont = Context({ 'status' : 'Login Invalid' })
+    return HttpResponse(templ.render(cont))
+
+def loginin(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = auth.authenticate(username = username, password = password)
         if user is not None and user.is_active:
             auth.login(request, user)
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/login/success/')
         else:
-            return HttpResponse('Invalid Login')
+            return HttpResponseRedirect('/login/invalid/')
     else:
-        return HttpResponse('Invalid Login')
+        pass
