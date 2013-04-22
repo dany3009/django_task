@@ -23,5 +23,23 @@ class StudentAdmin(admin.ModelAdmin):
 class GroupAdmin(admin.ModelAdmin):
     list_display = ('name', 'warden')
     
+class SqlRequests(object):
+    def process_response(self, request, response):
+        import re
+        from django.db import connection
+        queries = connection.queries
+        query_time = 0
+        query_count = 0
+        for query in queries:
+            query_time += float(query['time'])
+            query_count += int(1)
+            query['sql'] = re.sub(r'(FROM|WHERE)', '\n\\1', query['sql'])
+            query['sql'] = re.sub(r'((?:[^,]+,){3})', '\\1\n    ', query['sql'])
+            
+        res = '<p align="center">Query time: ' + str(query_time) + '<br />Query count: ' + str(query_count) + '</p></body>'    
+        response.content = response.content.replace('</body>', res)
+        return response
+    
+    
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Group, GroupAdmin)
