@@ -1,26 +1,24 @@
-from django.template import loader, Context
+from django.template import loader, Context, RequestContext
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from task.models import Student, Group
 from django.contrib import auth
 
+def context_proc(request):
+    from django.conf import settings
+    return {'settings': settings }
+
 def group_list(request):
     groups = Group.objects.all()
     students = Student.objects.all()
     templ = loader.get_template('home.html')
-    cont = Context({ 'groups' : groups, 'students' : students})
+    cont = RequestContext(request, { 'groups' : groups, 'students' : students}, processors = [context_proc])
     return HttpResponse(templ.render(cont))
 
 def student_list(request, name):
-    students = Student.objects.all()
-    list =[]
-    
-    for student in students:
-        if (name == student.group):
-            list.append(student)
-            
+    students = Student.objects.filter(group__name = name)
     templ = loader.get_template('students.html')
-    cont = Context({ 'list' : list })
+    cont = RequestContext(request, { 'students' : students }, processors=[context_proc])
     return HttpResponse(templ.render(cont))
 
 def login(request):

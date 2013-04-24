@@ -1,12 +1,20 @@
 [
   {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "username": "admin",
+        "password": "admin"
+    }
+  },
+  {
     "model": "task.Student",
     "pk": 1,
     "fields": {
       "name": "Stephen William Hawking",
       "birth_date": "1942-01-08",
       "ticket_number": "2346",
-      "group": "TP-21"
+      "group": "1"
     }
   },
   {
@@ -16,7 +24,7 @@
       "name": "Johnathan Bill Williams",
       "birth_date": "1956-09-28",
       "ticket_number": "2826",
-      "group": "TL-21"
+      "group": "2"
     }
   },
   {
