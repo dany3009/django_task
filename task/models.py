@@ -14,6 +14,9 @@ class Group(models.Model):
     name = models.CharField(max_length = 10)
     warden = models.ForeignKey('Student', related_name = 'warden')
     
+#    def get_student_count(self):
+#        return len(Student.objects.filter(group = self.name))    #FK != CharField
+    
     def __unicode__(self):
         return self.name
     

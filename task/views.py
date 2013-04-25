@@ -1,6 +1,7 @@
 from django.template import loader, Context, RequestContext
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
+from django.views.generic.simple import direct_to_template
 from task.models import Student, Group
 from django.contrib import auth
 
@@ -10,16 +11,11 @@ def context_proc(request):
 
 def group_list(request):
     groups = Group.objects.all()
-    students = Student.objects.all()
-    templ = loader.get_template('home.html')
-    cont = RequestContext(request, { 'groups' : groups, 'students' : students}, processors = [context_proc])
-    return HttpResponse(templ.render(cont))
+    return direct_to_template(request, 'home.html', { 'groups' : groups}, processors = [context_proc])
 
 def student_list(request, name):
     students = Student.objects.filter(group__name = name)
-    templ = loader.get_template('students.html')
-    cont = RequestContext(request, { 'students' : students }, processors=[context_proc])
-    return HttpResponse(templ.render(cont))
+    return direct_to_template(request, 'students.html', { 'students' : students }, processors = [context_proc])
 
 def login(request):
     return render(request, 'login.html')
