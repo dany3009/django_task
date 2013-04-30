@@ -3,6 +3,9 @@
 {% block content %}
 	{% for student in students %}
 	
+	{% load custom_tags %}
+	<span style="float: right;">{% url_to_edit_object student %}</span>
+	
 	<table>
 	<tr>
 		<td>Student name: &nbsp;</td>

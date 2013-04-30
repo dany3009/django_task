@@ -1,8 +1,7 @@
 from django.test.client import Client
-from task.models import *
 import unittest
 
-class TeastAddCase(unittest.TestCase):
+class TestAddCase(unittest.TestCase):
     def setUp(self):
         self.client = Client()
         
