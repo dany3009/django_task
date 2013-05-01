@@ -5,17 +5,13 @@ from django.views.generic.simple import direct_to_template
 from task.models import Student, Group
 from django.contrib import auth
 
-def context_proc(request):
-    from django.conf import settings
-    return {'settings': settings }
-
 def group_list(request):
     groups = Group.objects.all()
-    return direct_to_template(request, 'home.html', { 'groups' : groups}, processors = [context_proc])
+    return direct_to_template(request, 'home.html', { 'groups' : groups})
 
 def student_list(request, name):
     students = Student.objects.filter(group__name = name)
-    return direct_to_template(request, 'students.html', { 'students' : students }, processors = [context_proc])
+    return direct_to_template(request, 'students.html', { 'students' : students })
 
 def login(request):
     return render(request, 'login.html')
