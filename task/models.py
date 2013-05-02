@@ -1,6 +1,6 @@
 from django.db import models
 from task.admin import *
-from task.signals import *
+#from task.signals import *
 
 class Student(models.Model):
     name = models.CharField(max_length = 100)

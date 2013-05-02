@@ -1,9 +1,9 @@
-from django.template import loader, Context, RequestContext
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic.simple import direct_to_template
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect
 from task.models import Student, Group
-from django.contrib import auth
+from task.forms import *
 
 def group_list(request):
     groups = Group.objects.all()
@@ -13,28 +13,35 @@ def student_list(request, name):
     students = Student.objects.filter(group__name = name)
     return direct_to_template(request, 'students.html', { 'students' : students })
 
-def login(request):
-    return render(request, 'login.html')
-
-def login_success(request):
-    templ = loader.get_template('status_login.html')
-    cont = Context({ 'status' : 'Login Success' })
-    return HttpResponse(templ.render(cont))
-
-def login_invalid(request):
-    templ = loader.get_template('status_login.html')
-    cont = Context({ 'status' : 'Login Invalid' })
-    return HttpResponse(templ.render(cont))
-
-def loginin(request):
+@login_required
+def edit_student(request, student_id):
+    student = get_object_or_404(Student.objects, id=student_id)
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = auth.authenticate(username = username, password = password)
-        if user is not None and user.is_active:
-            auth.login(request, user)
-            return HttpResponseRedirect('/login/success/')
-        else:
-            return HttpResponseRedirect('/login/invalid/')
-    else:
-        pass
+        form = StudentForm(request.POST, instance = student)
+        if form.is_valid():
+            form.save()
+            return render(request, 'home.html')
+    return render(request, 'edit_student.html')
+        
+@login_required
+def delete_student(request, student_id):
+    student = get_object_or_404(Student, id = student_id)
+    student.delete()
+    return HttpResponseRedirect("/")
+
+@login_required
+def edit_group(request, group_id):
+    studgroup = get_object_or_404(Group.objects, id = group_id)
+    if request.method == 'POST':
+        form = GroupForm(request.POST, instance = studgroup)
+        if form.is_valid():
+            form.save()
+            return render(request, 'home.html')
+    return render(request, 'edit_student.html')
+
+
+@login_required
+def delete_group(request, group_id):
+    group = get_object_or_404(Group, id = group_id)
+    group.delete()
+    return HttpResponseRedirect("/") 

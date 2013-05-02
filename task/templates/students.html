@@ -4,7 +4,12 @@
 	{% for student in students %}
 	
 	{% load custom_tags %}
-	<span style="float: right;">{% url_to_edit_object student %}</span>
+	
+	{% if request.user.is_authenticated %}
+	<span style="float: right;">{% url_to_edit_object student %}
+	<a href="{% url delete_student student.id %}">[Delete {{ student.name }}]</a></span>
+	</span>
+	{% endif %}
 	
 	<table>
 	<tr>
